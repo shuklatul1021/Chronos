@@ -1,14 +1,18 @@
-use actix_web::{web, App, HttpResponse, HttpServer};
+use std::sync::{Arc, Mutex};
 
-use crate::routes::user::{user_log_in, user_sign_up};
+use actix_web::{web, App, HttpResponse, HttpServer};
+use store::connect::Store;
+use crate::routes::{job::{get_job, job_route}, user::{user_log_in, user_sign_up}};
 
 pub mod routes;
 pub mod structure;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
+    let db_store = web::Data::new(Arc::new(Mutex::new(Store::default().unwrap())));
+    HttpServer::new(move || {
         App::new()
+            .app_data(db_store.clone())
             .service(
                 web::scope("/api/v1")
                     .service(
@@ -17,8 +21,9 @@ async fn main() -> std::io::Result<()> {
                             .route("/user/sign-up", web::post().to(user_sign_up))
                     )
                     .service(
-                        web::scope("/test")
-                            .route("/main", web::get().to(|| async { HttpResponse::Ok().body("User profile") }))
+                        web::scope("/job")
+                            .route("/submit-job", web::post().to(job_route))
+                            .route("/get-job", web::get().to(get_job))
                     )
             )
     })

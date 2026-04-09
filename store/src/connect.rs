@@ -1,8 +1,6 @@
-use diesel::result::Error;
 use diesel::prelude::*;
 
 use crate::url::DatabaseCredentials;
-
 
 pub struct Store {
     pub connection : PgConnection

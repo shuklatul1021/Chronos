@@ -1,8 +1,8 @@
-
-use std::error::Error;
+use std::u8;
 
 use diesel::prelude::*;
 use uuid::Uuid;
+
 
 use crate::helper::utils::get_user;
 use crate::connect::Store;
@@ -19,12 +19,13 @@ impl Store {
         
         let user_uuid = Uuid::new_v4().to_string();
         let user_email = &email.clone();
+        let hashed_password = rcrypt::hash(&password, rcrypt::DEFAULT_COST).unwrap();
 
         let u = User {
             id: user_uuid,
             username: username,
             email: email,
-            password: password,
+            password: hashed_password[0].to_string(),
             created_at:  chrono::Utc::now().naive_utc(),
             updated_at: chrono::Utc::now().naive_utc(),
         };
@@ -50,7 +51,29 @@ impl Store {
         email: String,
         password: String
     ) -> Result<bool, diesel::result::Error> {
-        // Implementation for user login
-        Ok(false)
+        
+        let result = user::table
+            .filter(user::email.eq(email))
+            .filter(user::password.eq(&password))
+            .select(User::as_select())
+            .load::<User>(&mut self.connection)?;
+
+        if result.len() <= 0 {
+            return Ok(false);
+        }
+        let db_password = result[0].password.parse::<u8>().unwrap();
+        
+        let verify_password = rcrypt::verify(password, &[db_password]);
+        match verify_password {
+            Ok(var) => {
+                if var {
+                    return Ok(true);
+                }
+            },
+            Err(e) =>{
+                return Ok(false);
+            }
+        }
+        Ok(false)      
     }
 }

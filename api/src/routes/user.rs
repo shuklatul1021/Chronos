@@ -1,15 +1,25 @@
+use std::sync::{Arc, Mutex};
+
 use actix_web::{web, HttpResponse, Responder};
+use store::connect::Store;
 
-use crate::structure::request::{LoginRequestStructure, SignupRequestStructure};
 
-pub async fn user_log_in(req: web::Json<LoginRequestStructure>) -> impl Responder {
+use crate::structure::{request::{LoginRequestStructure, SignupRequestStructure}, response::SignupResponseStructure};
+
+pub async fn user_log_in(req: web::Json<LoginRequestStructure>) -> Result<impl Responder, actix_web::Error> {
     let email = &req.email;
 
-    HttpResponse::Ok().body(format!("User with email {} logged in successfully", email))
+    Ok(HttpResponse::Ok().body(format!("User with email {} logged in successfully", email)))
 }
 
-pub async fn user_sign_up(req: web::Json<SignupRequestStructure>) -> impl Responder {
-    let email = req.email;
+pub async fn user_sign_up(
+    req: web::Json<SignupRequestStructure>, 
+    db_store: web::Data<Arc<Mutex<Store>>>
+) -> Result<impl Responder, actix_web::Error> {
+    let working = db_store.lock().unwrap();
 
-    HttpResponse::Ok().body(req_body)
+    Ok(web::Json(SignupResponseStructure {
+        message: "User registered successfully".to_string(),
+        success: true,
+    }))
 }
