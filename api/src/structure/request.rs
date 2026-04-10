@@ -17,7 +17,7 @@ pub struct SignupRequestStructure {
 pub enum JobType { SendEmail }
 
 #[derive(Deserialize)]
-enum Priority { High , Low, Medium }
+pub enum Priority { High , Low, Medium }
 
 #[derive(Deserialize)]
 pub struct JobRequestStructure{

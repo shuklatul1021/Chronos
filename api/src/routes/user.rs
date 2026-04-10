@@ -6,7 +6,9 @@ use store::connect::Store;
 
 use crate::structure::{request::{LoginRequestStructure, SignupRequestStructure}, response::SignupResponseStructure};
 
-pub async fn user_log_in(req: web::Json<LoginRequestStructure>) -> Result<impl Responder, actix_web::Error> {
+pub async fn user_log_in(
+    req: web::Json<LoginRequestStructure>
+) -> Result<impl Responder, actix_web::Error> {
     let email = &req.email;
 
     Ok(HttpResponse::Ok().body(format!("User with email {} logged in successfully", email)))

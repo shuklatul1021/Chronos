@@ -1,13 +1,19 @@
+use std::sync::Mutex;
+
 use actix_web::{Responder, web};
+use store::connect::Store;
 
 use crate::structure::{request::{JobRequestStructure}, response::{JobResponseData, JobResponseStructure, JobType, JobStatus}};
 
 pub async fn job_route(
     req : web::Json<JobRequestStructure>,
-) -> Result<impl Responder>{
+    db_store: web::Data<Mutex<Store>>
+) -> Result<impl Responder, actix_web::Error>{
+
+
 
     Ok(web::Json(JobResponseStructure {
-        message : "Job Submit Successfull".to_string(),
+        message : "Job Submit Successfully".to_string(),
         success : true,
         data : JobResponseData {
             job_type : JobType::SendEmail,
