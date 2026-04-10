@@ -1,15 +1,26 @@
 use serde::Serialize;
 
 #[derive(Serialize)]
+pub struct User {
+    pub id: String,
+    pub username: String,
+    pub email: String,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: chrono::NaiveDateTime,
+}
+
+#[derive(Serialize)]
 pub struct LoginResponseStructure {
     pub message: String,
     pub success: bool,
+    pub token : Option<String>
 }
 
 #[derive(Serialize)]
 pub struct SignupResponseStructure {
     pub message: String,
     pub success: bool,
+    pub user : Option<User>
 }
 
 

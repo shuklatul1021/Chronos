@@ -14,7 +14,7 @@ pub struct SignupRequestStructure {
 }
 
 #[derive(Deserialize)]
-pub enum JobType { SendEmail }
+pub enum JobType { SendEmail, Notification, PdfGeneration }
 
 #[derive(Deserialize)]
 pub enum Priority { High , Low, Medium }
@@ -26,7 +26,7 @@ pub struct JobRequestStructure{
     pub priority : Priority,
     pub run_at : String,
     pub max_retries : i32,
-    pub wobhook_url : String
+    pub webhook_url : String
 }
 
 
