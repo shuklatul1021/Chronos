@@ -6,6 +6,7 @@ use crate::routes::{job::{job_route}, user::{user_log_in, user_sign_up}};
 
 pub mod routes;
 pub mod structure;
+pub mod middleware;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
