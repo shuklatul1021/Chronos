@@ -23,7 +23,6 @@ pub struct SignupResponseStructure {
     pub user : Option<User>
 }
 
-
 #[derive(Serialize)]
 pub enum JobType { SendEmail }
 
@@ -31,7 +30,7 @@ pub enum JobType { SendEmail }
 pub enum JobStatus { Pending , Completed, Failed }
 
 #[derive(Serialize)]
-pub struct JobResponseData{
+pub struct JobResponseData {
     pub job_type : JobType,
     pub status : JobStatus,
     pub result : String,

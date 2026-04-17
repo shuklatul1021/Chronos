@@ -4,7 +4,7 @@ use std::num::NonZeroUsize;
 use crate::redis::RedisClient;
 
 impl RedisClient {
-    pub fn submit_job(
+    pub fn submit_redis_job(
         &mut self,
         key: &str, 
         value: &str
