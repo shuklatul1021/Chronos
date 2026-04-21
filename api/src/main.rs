@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex};
 
 use actix_web::{web, App, HttpResponse, HttpServer};
+use redis_client::redis::RedisClient;
 use store::connect::Store;
 use crate::routes::{job::{job_route}, user::{user_log_in, user_sign_up}};
 
@@ -11,6 +12,7 @@ pub mod middleware;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let db_store = web::Data::new(Mutex::new(Store::default().unwrap()));
+
     HttpServer::new(move || {
         App::new()
             .app_data(db_store.clone())

@@ -13,15 +13,15 @@ pub struct SignupRequestStructure {
     pub password: String,
 }
 
-#[derive(Deserialize)]
-pub enum JobType { SendEmail, Notification, PdfGeneration }
 
 #[derive(Deserialize)]
 pub enum Priority { High , Low, Medium }
 
 #[derive(Deserialize)]
 pub struct JobRequestStructure{
-    pub job_type : JobType,
+    pub job_title : String,
+    pub job_description : Option<String>,
+    pub job_type : String,
     pub payload : String,
     pub priority : Priority,
     pub run_at : String,
